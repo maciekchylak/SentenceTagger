@@ -19,8 +19,9 @@
   <br>
   <textarea type="text" id="input_text" name="input_text" required minlength="4" cols="40" rows="5"></textarea>
 
-  <button onclick="sendRequest()">Wyślij</button>
+  <button onclick="sendRequest()">Send</button>
   <h2>Output:</h2>
+
   <div id="output"></div>
 
   <script>
@@ -39,11 +40,61 @@
                     'Content-Type': 'application/json'
                 },
                 data: JSON.stringify(data),
+
                 success: function(response) {
-                    document.getElementById("output").innerText = response;
+
+                    var output = document.getElementById("output");
+                    output.innerHTML = "";
+
+                    var table = document.createElement("table");
+                    table.id = "table";
+
+                    var thead = document.createElement("thead");
+                    var tr = document.createElement("tr");
+
+                    var headers = ["Text", "Label", "Start Index", "End Index"];
+
+                    headers.forEach(headerText => {
+                      var th = document.createElement("th");
+                      th.textContent = headerText;
+                      tr.appendChild(th);
+                    });
+
+                    thead.appendChild(tr);
+                    table.appendChild(thead);
+
+                    var tbody = document.createElement("tbody");
+                    tbody.id = "responseBody";
+
+                    response.entities.forEach(item => {
+                      console.info("a");
+                      var row = document.createElement("tr");
+
+                      var textCell = document.createElement("td");
+                      textCell.textContent = item.text;
+                      row.appendChild(textCell);
+
+                      var labelCell = document.createElement("td");
+                      labelCell.textContent = item.label;
+                      row.appendChild(labelCell);
+
+                      var startIdxCell = document.createElement("td");
+                      startIdxCell.textContent = item.start_idx;
+                      row.appendChild(startIdxCell);
+
+                      var endIdxCell = document.createElement("td");
+                      endIdxCell.textContent = item.end_idx;
+                      row.appendChild(endIdxCell);
+
+                      tbody.appendChild(row);
+                    });
+
+                    table.appendChild(tbody);
+                    output.appendChild(table);
+
                 },
                 error: function(xhr, status, error) {
-                    console.error('Błąd:', error);
+                    console.error('Error:', error);
                 }
             });
     }
