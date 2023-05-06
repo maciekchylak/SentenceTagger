@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sentence tagging model</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-storage.js"></script>
+  <style>
+    /* Dodaj swój kod CSS tutaj */
+  </style>
+</head>
+<body>
+  <h1>Sentence tagging model</h1>
+  <br>
+  <label for="input_text">Input sentence which you want to analyse:</label>
+  <br>
+  <textarea type="text" id="input_text" name="input_text" required minlength="4" cols="40" rows="5"></textarea>
+
+  <button onclick="sendRequest()">Wyślij</button>
+  <h2>Output:</h2>
+  <div id="output"></div>
+
+  <script>
+
+    function sendRequest() {
+            var input = document.getElementById("input_text").value;
+            var data = {
+                text: input
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "https://pl-core-news-sm-qw4epicmqa-ew.a.run.app/predict/",
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify(data),
+                success: function(response) {
+                    document.getElementById("output").innerText = response;
+                },
+                error: function(xhr, status, error) {
+                    console.error('Błąd:', error);
+                }
+            });
+    }
+
+</script>
+</body>
+</html>
