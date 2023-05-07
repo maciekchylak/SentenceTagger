@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sentence tagging model</title>
+  <link rel="icon" type="image/x-icon" href="https://pendulum-it.com/wp-content/uploads/2020/05/Google-Cloud-Platform-GCP-logo.png">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-storage.js"></script>
+</head>
+<style>
+      h1 {text-align: center;}
+      p {text-align: center;}
+      div {text-align: center;}
+	  h2 {text-align: center;}
+	  body {font-family: bradley hand, cursive; background-color: #DBF9FC;}
+ </style>
+<body>
+  <h1>Sentence tagging model</h1>
+  <br>
+  <div> 
+  <p><i><b>Input<i></b> - sentence which you want to analyse:</p>
+  <br>
+  <textarea type="text" id="input_text" name="input_text" required minlength="4" cols="40" rows="5"></textarea>
+  <br>
+  <button onclick="sendRequest()">Send</button>
+  </div>
+  <p><i><b>Output:</b></i></p>
+  <div id="output"></div>
+
+  <script>
+
+    function sendRequest() {
+            var input = document.getElementById("input_text").value;
+            var data = {
+                text: input
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "https://pl-core-news-sm-qw4epicmqa-ew.a.run.app/predict/",
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                data: JSON.stringify(data),
+                success: function(response) {
+                    document.getElementById("output").innerText = response;
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error occured:', error);
+                }
+            });
+    }
+
+</script>
+</body>
+</html>
