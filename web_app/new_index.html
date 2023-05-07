@@ -37,10 +37,11 @@
             var data = {
                 text: input
             };
+            console.log(input);
 
             $.ajax({
                 type: "POST",
-                url: "https://us-central1-earnest-goal-383413.cloudfunctions.net/Prediction?text=" + input,
+                  url: "https://us-central1-earnest-goal-383413.cloudfunctions.net/Prediction?text=" + input,
                 headers: {
                     'accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -48,7 +49,6 @@
                 data: JSON.stringify(data),
 
                 success: function(response) {
-                    console.log(response)
 
                     var table = document.createElement("table");
                     table.id = "table";
@@ -56,7 +56,7 @@
                     var thead = document.createElement("thead");
                     var tr = document.createElement("tr");
 
-                    var headers = ["Text", "Label", "Start Index", "End Index"];
+                    var headers = ["Text", "Label"];
 
                     headers.forEach(headerText => {
                       var th = document.createElement("th");
@@ -82,19 +82,20 @@
                       labelCell.textContent = item.label;
                       row.appendChild(labelCell);
 
-                      var startIdxCell = document.createElement("td");
-                      startIdxCell.textContent = item.start_idx;
-                      row.appendChild(startIdxCell);
-
-                      var endIdxCell = document.createElement("td");
-                      endIdxCell.textContent = item.end_idx;
-                      row.appendChild(endIdxCell);
 
                       tbody.appendChild(row);
                     });
 
+                    var input_sentence = document.createElement("input_sentence");
+                    input_sentence.textContent = "Input sentence: " + input
+
+                    var empty = document.createElement("br");
+
                     table.appendChild(tbody);
+
+                    output.appendChild(input_sentence)
                     output.appendChild(table);
+                    output.appendChild(empty)
 
                 },
                 error: function(xhr, status, error) {
