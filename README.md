@@ -1,18 +1,7 @@
-# gcp_model_deploy_example
+# Repository for cloud computing project 1
 
-Code for [Deploy Your ML Model as a Web Service in Minutes Using GCP’s Cloud Run](https://medium.com/p/ee9d433d8787)
+Model deployment inspired with [this](https://medium.com/p/ee9d433d8787) article.
 
-## Create Env
-```commandline
-conda create --name gcp_model_deploy python==3.8
-conda activate gcp_model_deploy
-```
+Authors of the project: Maciej Chylak, Bartosz Jamroży, Agata Kaczmarek.
 
-## Install dependencies
-```commandline
-poetry install
-```
-
-## Deployment
-
-Activate cloudbuild in your GCP project
+The app created for the project (available at [LINK]) aims at showing the key information from a text given by the user. The app allows users to write a sentence in polish, which then is forwarded to the Natural Language Processing (NLP) model. The model processes the input and returns identified entities of the text, which are then viewed to the user in the app.
