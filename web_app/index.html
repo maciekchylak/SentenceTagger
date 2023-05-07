@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>Sentence tagging model</title>
+  <link rel="icon" type="image/x-icon" href="https://pendulum-it.com/wp-content/uploads/2020/05/Google-Cloud-Platform-GCP-logo.png">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-storage.js"></script>
-  <style>
-    /* Dodaj swój kod CSS tutaj */
-  </style>
 </head>
+<style>
+      h1 {text-align: center;}
+      p {text-align: center;}
+      div {text-align: center;}
+	  h2 {text-align: center;}
+	  body {font-family: bradley hand, cursive; background-color: #DBF9FC; text-align: center;}
+	  table {margin: 0 auto;}
+ </style>
 <body>
   <h1>Sentence tagging model</h1>
   <br>
-  <label for="input_text">Input sentence which you want to analyse:</label>
+  <div> 
+  <p><i><b>Input<i></b> - sentence which you want to analyse:</p>
   <br>
   <textarea type="text" id="input_text" name="input_text" required minlength="4" cols="40" rows="5"></textarea>
-
+  <br>
   <button onclick="sendRequest()">Send</button>
-  <h2>Output:</h2>
-
+  </div>
+  <p><i><b>Output:</b></i></p>
   <div id="output"></div>
-
   <script>
-
-  async function sendRequest() {
+	async function sendRequest() {
             var input = document.getElementById("input_text").value;
             var data = {
                 text: input
             };
+            console.log(input);
 
             $.ajax({
                 type: "POST",
-                url: "https://pl-core-news-sm-qw4epicmqa-ew.a.run.app/predict/",
+                  url: "https://us-central1-earnest-goal-383413.cloudfunctions.net/Prediction?text=" + input,
                 headers: {
                     'accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -42,7 +49,6 @@
                 data: JSON.stringify(data),
 
                 success: function(response) {
-                    console.log(response)
 
                     var table = document.createElement("table");
                     table.id = "table";
@@ -50,7 +56,7 @@
                     var thead = document.createElement("thead");
                     var tr = document.createElement("tr");
 
-                    var headers = ["Text", "Label", "Start Index", "End Index"];
+                    var headers = ["Text", "Label"];
 
                     headers.forEach(headerText => {
                       var th = document.createElement("th");
@@ -76,19 +82,20 @@
                       labelCell.textContent = item.label;
                       row.appendChild(labelCell);
 
-                      var startIdxCell = document.createElement("td");
-                      startIdxCell.textContent = item.start_idx;
-                      row.appendChild(startIdxCell);
-
-                      var endIdxCell = document.createElement("td");
-                      endIdxCell.textContent = item.end_idx;
-                      row.appendChild(endIdxCell);
 
                       tbody.appendChild(row);
                     });
 
+                    var input_sentence = document.createElement("input_sentence");
+                    input_sentence.textContent = "Input sentence: " + input
+
+                    var empty = document.createElement("br");
+
                     table.appendChild(tbody);
+
+                    output.appendChild(input_sentence)
                     output.appendChild(table);
+                    output.appendChild(empty)
 
                 },
                 error: function(xhr, status, error) {
