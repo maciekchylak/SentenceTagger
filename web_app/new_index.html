@@ -16,7 +16,8 @@
       p {text-align: center;}
       div {text-align: center;}
 	  h2 {text-align: center;}
-	  body {font-family: bradley hand, cursive; background-color: #DBF9FC;}
+	  body {font-family: bradley hand, cursive; background-color: #DBF9FC; text-align: center;}
+	  table {margin: 0 auto;}
  </style>
 <body>
   <h1>Sentence tagging model</h1>
@@ -30,10 +31,8 @@
   </div>
   <p><i><b>Output:</b></i></p>
   <div id="output"></div>
-
   <script>
-
-    function sendRequest() {
+	async function sendRequest() {
             var input = document.getElementById("input_text").value;
             var data = {
                 text: input
@@ -47,11 +46,59 @@
                     'Content-Type': 'application/json'
                 },
                 data: JSON.stringify(data),
+
                 success: function(response) {
-                    document.getElementById("output").innerText = response;
+                    console.log(response)
+
+                    var table = document.createElement("table");
+                    table.id = "table";
+
+                    var thead = document.createElement("thead");
+                    var tr = document.createElement("tr");
+
+                    var headers = ["Text", "Label", "Start Index", "End Index"];
+
+                    headers.forEach(headerText => {
+                      var th = document.createElement("th");
+                      th.textContent = headerText;
+                      tr.appendChild(th);
+                    });
+
+                    thead.appendChild(tr);
+                    table.appendChild(thead);
+
+                    var tbody = document.createElement("tbody");
+                    tbody.id = "responseBody";
+
+                    response.entities.forEach(item => {
+                      console.info("a");
+                      var row = document.createElement("tr");
+
+                      var textCell = document.createElement("td");
+                      textCell.textContent = item.text;
+                      row.appendChild(textCell);
+
+                      var labelCell = document.createElement("td");
+                      labelCell.textContent = item.label;
+                      row.appendChild(labelCell);
+
+                      var startIdxCell = document.createElement("td");
+                      startIdxCell.textContent = item.start_idx;
+                      row.appendChild(startIdxCell);
+
+                      var endIdxCell = document.createElement("td");
+                      endIdxCell.textContent = item.end_idx;
+                      row.appendChild(endIdxCell);
+
+                      tbody.appendChild(row);
+                    });
+
+                    table.appendChild(tbody);
+                    output.appendChild(table);
+
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error occured:', error);
+                    console.error('Error:', error);
                 }
             });
     }
